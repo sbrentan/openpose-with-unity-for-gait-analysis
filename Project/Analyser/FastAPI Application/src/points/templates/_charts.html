@@ -1,0 +1,61 @@
+<div class="chart">
+    <input type="hidden" id="x-y-graph-type" name="graph_type" value="x_y">
+    <div id="x-y-spinner" class="htmx-indicator"><i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></div>
+    <div id="x-y-chart"
+         {% if not real_time %}
+         hx-get="{{ endpoint }}"
+         hx-include="#x-y-graph-type, #common-chart-form"
+         hx-trigger="load, change from:#common-chart-form"
+         hx-indicator="#x-y-spinner"
+         hx-target="#x-y-chart"
+         {% endif %}
+    >
+    </div>
+</div>
+
+<div class="chart">
+    <input type="hidden" id="y-x-graph-type" name="graph_type" value="y_x">
+    <div id="y-x-spinner" class="htmx-indicator"><i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></div>
+    <div id="y-x-chart"
+         {% if not real_time %}
+         hx-get="{{ endpoint }}"
+         hx-include="#y-x-graph-type, #common-chart-form"
+         hx-trigger="load, change from:#common-chart-form"
+         hx-indicator="#y-x-spinner"
+         hx-target="#y-x-chart"
+         {% endif %}
+    >
+    </div>
+</div>
+
+<br>
+
+<div class="chart">
+    <input type="hidden" id="x-time-graph-type" name="graph_type" value="x_time">
+    <div id="x-time-spinner" class="htmx-indicator"><i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></div>
+    <div id="x-time-chart"
+         {% if not real_time %}
+         hx-get="{{ endpoint }}"
+         hx-include="#x-time-graph-type, #common-chart-form"
+         hx-trigger="load, change from:#common-chart-form"
+         hx-indicator="#x-time-spinner"
+         hx-target="#x-time-chart"
+         {% endif %}
+    >
+    </div>
+</div>
+
+<div class="chart">
+    <input type="hidden" id="y-time-graph-type" name="graph_type" value="y_time">
+    <div id="y-time-spinner" class="htmx-indicator"><i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i></div>
+    <div id="y-time-chart"
+         {% if not real_time %}
+         hx-get="{{ endpoint }}"
+         hx-include="#y-time-graph-type, #common-chart-form"
+         hx-trigger="load, change from:#common-chart-form"
+         hx-indicator="#y-time-spinner"
+         hx-target="#y-time-chart"
+         {% endif %}
+    >
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis {{ document.name }}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        {% include 'style.css' %}
+    </style>
+</head>
+<body style="text-align: center; display: flex; justify-content: space-around">
+
+    <div style="text-align: center;">
+        <h1>Analysis {{ document.name }}</h1>
+
+        <h3>Select other document:</h3>
+        <select id="document"
+                name="document"
+                hx-get="/documents/html"
+                hx-trigger="load"
+                hx-target="#document"
+                hx-include="[name='document_id']"
+        >
+        </select>
+        <input type="hidden" id="document_id" name="document_id" value="{{ document.id }}">
+        <p>or</p>
+        <a href="/skeleton/analysis" class="btn">Real-time Data Analysis</a>
+        <script>
+            document.getElementById('document').addEventListener('change', function (event) {
+                let documentId = event.target.value;
+                window.location.href = '/documents/' + documentId + '/points/analysis';
+            });
+        </script>
+
+        <div id="common-chart-form">
+            <h3>Part type:</h3>
+            <input type="checkbox" name="part_types" value="head" id="head_part" checked> <label for="head_part">Head</label><br>
+            <input type="checkbox" name="part_types" value="trunk" id="trunk_part" checked> <label for="trunk_part">Trunk</label><br>
+            <input type="checkbox" name="part_types" value="right_arm" id="right_arm_part" checked> <label for="right_arm_part">Right Arm</label><br>
+            <input type="checkbox" name="part_types" value="left_arm" id="left_arm_part" checked> <label for="left_arm_part">Left Arm</label><br>
+            <input type="checkbox" name="part_types" value="right_leg" id="right_leg_part" checked> <label for="right_leg_part">Right Leg</label><br>
+            <input type="checkbox" name="part_types" value="left_leg" id="left_leg_part" checked> <label for="left_leg_part">Left Leg</label><br>
+            <br>
+        </div>
+    </div>
+    <div style="margin-top: -30px">
+    {% with endpoint='/documents/' + document.id|string + '/points/graph' %}
+        {% include '_charts.html' %}
+    {% endwith %}
+    </div>
+</body>
+</html>

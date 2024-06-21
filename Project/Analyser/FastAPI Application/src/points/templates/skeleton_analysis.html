@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Analysis Real Time</title>
+        <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            {% include 'style.css' %}
+        </style>
+    </head>
+    <body style="text-align: center; display: flex; justify-content: space-around">
+
+        <div style="text-align: center;">
+            <h1>Analysis Real Time</h1>
+
+            <h3>Select instead a document:</h3>
+            <select id="document"
+                    name="document"
+                    hx-get="/documents/html"
+                    hx-trigger="load"
+                    hx-target="#document"
+            >
+            </select>
+            <script>
+                document.getElementById('document').addEventListener('change', function (event) {
+                    let documentId = event.target.value;
+                    window.location.href = '/documents/' + documentId + '/points/analysis';
+                });
+            </script>
+            <h3>Save currently displayed points to a new document:</h3>
+            <form id="save-data-form" method="POST" action="/documents/real/time">
+                <i><span id="form-error-message" style="color: red; display: none;"></span></i>
+                <input type="hidden" name="first_skeleton_id" id="first_skeleton_id">
+                <input type="hidden" name="last_skeleton_id" id="last_skeleton_id">
+                <label for="new_document_name">Name of new document: </label>
+                <input type="text" id="new_document_name" name="new_document_name">
+                <button class="btn" onclick="saveDataToDocument(event)">Save</button>
+            </form>
+            <p>or</p>
+            <button class="btn plain" onclick="refreshData()">Refresh data</button>
+            <button class="btn delete" id="toggle-data-btn" onclick="toggleData()" data-stopped="false">Stop data</button>
+        </div>
+        <div style="margin-top: -30px">
+        {% with endpoint='/skeleton/points/graph' %}
+            {% with real_time=True %}
+                {% include '_charts.html' %}
+            {% endwith %}
+        {% endwith %}
+        </div>
+    </body>
+
+    <script>
+        let initialSkeletonId = {{ last_point_id }};
+        let lastSkeletonId = {{ last_point_id }};
+        {% include 'script.js' %}
+    </script>
+</html>
